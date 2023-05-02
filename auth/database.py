@@ -5,6 +5,7 @@ from fastapi_users.db import SQLAlchemyBaseUserTable, SQLAlchemyUserDatabase
 from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
 from sqlalchemy.orm import DeclarativeBase, mapped_column, Mapped
 from sqlalchemy import String, Boolean, Integer, TIMESTAMP, ForeignKey
+from sqlalchemy.orm import sessionmaker
 
 from datetime import datetime
 
@@ -58,7 +59,7 @@ class User(SQLAlchemyBaseUserTable[int], Base):
 
 
 engine = create_async_engine(DATABASE_URL)
-async_session_maker = async_sessionmaker(engine, expire_on_commit=False)
+async_session_maker = async_sessionmaker(engine, class_=AsyncSession, expire_on_commit=False)
 
 
 async def get_async_session() -> AsyncGenerator[AsyncSession, None]:
